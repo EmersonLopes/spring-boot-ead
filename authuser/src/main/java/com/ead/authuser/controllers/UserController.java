@@ -5,6 +5,7 @@ import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
 import com.ead.authuser.specifications.SpecificationTemplate;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import java.util.UUID;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@Log4j2
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/users")
@@ -72,8 +74,10 @@ public class UserController {
             @RequestBody @Validated(UserDto.UserView.UserPut.class)
             @JsonView(UserDto.UserView.UserPut.class) UserDto userDto) {
 
+        log.debug("PUT updateUser userDto {} ", userDto.toString());
         Optional<UserModel> userModelOptional = userService.findById(userId);
         if (!userModelOptional.isPresent()) {
+            log.warn("User {} not found, userId ", userDto.getUserId());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         } else {
             var userModel = userModelOptional.get();
@@ -82,6 +86,9 @@ public class UserController {
             userModel.setCpf(userDto.getCpf());
             userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
             userService.save(userModel);
+
+            log.debug("PUT updateUser userModel saved {} ", userModel.toString());
+            log.info("User saved successfully userId {} ", userModel.getUserId());
 
             return ResponseEntity.status(HttpStatus.OK).body("User updated successfuly.");
         }
@@ -98,6 +105,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
         if (!userModelOptional.get().getPassword().equals(userDto.getOldPassword())) {
+            log.warn("Mismatched old password, userId ", userDto.getUserId());
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Mismatched old password");
 
         } else {
