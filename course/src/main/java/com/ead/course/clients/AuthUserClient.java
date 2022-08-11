@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @Log4j2
 @Component
-public class CourseClient {
+public class AuthUserClient {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -40,7 +40,8 @@ public class CourseClient {
         log.debug("Request URL: {}", url);
         log.info("Request URL: {}", url);
         try {
-            ParameterizedTypeReference<ResponsePageDto<UserDto>> resposeType = new ParameterizedTypeReference<ResponsePageDto<UserDto>>() {};
+            ParameterizedTypeReference<ResponsePageDto<UserDto>> resposeType = new ParameterizedTypeReference<ResponsePageDto<UserDto>>() {
+            };
             ResponseEntity<ResponsePageDto<UserDto>> result = restTemplate.exchange(url, HttpMethod.GET, null, resposeType);
 
             searchResult = result.getBody().getContent();
@@ -54,6 +55,12 @@ public class CourseClient {
         log.info("Ending reques /users userId {}", courseId);
 
         return new PageImpl<>(searchResult);
+
+    }
+
+    public ResponseEntity<UserDto> getOneUserById(UUID userId) {
+        String url = REQUEST_URL_AUTHUSER + "/users/" + userId;
+        return restTemplate.exchange(url, HttpMethod.GET, null, UserDto.class);
 
     }
 }

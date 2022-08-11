@@ -1,5 +1,6 @@
 package com.ead.course.dtos;
 
+import com.ead.course.enums.UserStatus;
 import com.ead.course.validation.UsernameConstraint;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -46,6 +47,9 @@ public class UserDto {
 
     @JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
     private String fullName;
+
+    @JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
+    private UserStatus userStatus;
 
     @JsonView({UserView.RegistrationPost.class, UserView.UserPut.class})
     private String phoneNumber;
