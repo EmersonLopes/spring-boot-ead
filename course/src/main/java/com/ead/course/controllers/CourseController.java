@@ -38,7 +38,7 @@ public class CourseController {
     public ResponseEntity<Object> saveCourse(@RequestBody CourseDto courseDto, Errors errors) {
         log.debug("POST saveCourse courseDto received {}", courseDto.toString());
         courseValidator.validate(courseDto, errors);
-        if(errors.hasErrors()){
+        if (errors.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.getAllErrors());
         }
         var courseModel = new CourseModel();
@@ -88,13 +88,8 @@ public class CourseController {
             @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(required = false) UUID userId
     ) {
-        Page<CourseModel> all = null;
-        if (userId != null) {
-            all = courseService.findAll(SpecificationTemplate.courseUserId(userId).and(spec), pageable);
-        } else {
-            all = courseService.findAll(spec, pageable);
-        }
-        return ResponseEntity.ok(all);
+
+        return ResponseEntity.ok(courseService.findAll(spec, pageable));
     }
 
     @GetMapping("/{courseId}")
