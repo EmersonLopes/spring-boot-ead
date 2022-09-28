@@ -15,4 +15,6 @@ public class SpecificationTemplate {
             @Spec(path = "name", spec = Like.class)
     })
     public interface CourseSpec extends Specification<CourseModel> {}
+
+
 }
