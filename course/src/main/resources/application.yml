@@ -21,6 +21,11 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  output:
+    ansi:
+      enabled: Always
+  rabbitmq:
+    addresses: amqps://dubhksvm:wroi-A9PXg7DtVkmCGyOfsCmIPm5Rs63@beaver.rmq.cloudamqp.com/dubhksvm
 
 ead:
   api:
