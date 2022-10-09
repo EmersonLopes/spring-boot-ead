@@ -1,13 +1,13 @@
 server:
   port: 8087
   servlet:
-    context-path: '/var-produto/'
+    context-path: '/ead-authuser/'
 
 spring:
   application:
-    name: var-produto
+    name: ead-authuser-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/produto
+    url: jdbc:postgresql://localhost:5432/ead-authuser-v2
     username: postgres
     password: postgres
   jpa:
@@ -32,6 +32,12 @@ logging:
     root: INFO
     org.springframework.web: DEBUG
     org.hibernate: DEBUG
+
+ead:
+  api:
+    url:
+      course: 'http://ead-course-service/ead-course'
+
 
 #eureka:
 #  client:
